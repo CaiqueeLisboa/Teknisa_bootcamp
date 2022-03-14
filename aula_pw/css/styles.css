@@ -24,7 +24,6 @@ label{
     display: flex;
     align-items: center;
     flex-direction: column;
-
 }
 
 #condition {
@@ -34,6 +33,18 @@ label{
     margin-top: 8px;
 }
 
+#languageOptions {
+    display: flex;
+    align-items: center;
+    max-width: 180px;
+    min-height: 100%;
+    flex-wrap: wrap;
+    margin: 1.2% 0px;
+}
+
+section > div:not(:first-child) {
+    padding: 0 2em;
+}
 .result {
     background-color: #ededed;
 }
@@ -42,4 +53,59 @@ label{
     padding: 20px 30px 10px;
     font-weight: bold;
     font-size: 1.3em;
+}
+
+.container {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.card {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 0px;
+    overflow: hidden;
+    max-width: 339.25px;
+    height: 114px;
+    left: 0px;
+    top: 0px;
+    box-shadow: 0px 4px 4px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    flex: none;
+    order: 0;
+    flex-grow: 1;
+    margin: 12px;
+    background-color: white;
+}
+
+.profileDescription {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    padding: 5px;
+    justify-content: space-around;
+}
+
+.info{
+    display: flex;
+    flex-direction: column;
+}
+
+.iconLanguage {
+    height: 24px;
+    margin: 0px;
+
+}
+
+h3{
+    color: #333333;
+    flex: none;
+    margin: 0px;
+}
+
+.invisible {
+    display: none;
 }
