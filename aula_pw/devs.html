@@ -7,44 +7,44 @@
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <title>Padrões Web</title>
 </head>
-<body>
+<body onload="preRender()">
     <header> 
         <h1> Desenvolvedores </h1>
         <section> 
             <div id="name">
                 <label> Por Nome: </label>
-                <input id="nameSearch" placeholder="digite aqui..." type="text"/>
+                <input id="nameSearch" placeholder="digite aqui..." type="text" oninput="filter()"/>
             </div>
 
             <div id="language">
                 <label>Por Linguagem: </label>
                 <div id="condition">
-                    <input id="1" type="radio" name="option" checked/>
+                    <input id="1" type="radio" name="option" onchange="filter()" checked/>
                     <spam>E</spam>
                     
-                    <input id="2" type="radio" name="option"/>
+                    <input id="2" type="radio" name="option" onchange="filter()">
                     <spam>OU</spam>
                 </div>
             </div>
 
             <div id="languageOptions">
                 <label>
-                    <input id="java" name="java" type="checkbox" checked/>
+                    <input id="java" name="java" type="checkbox" onchange="filter()" checked/>
                     <spam>Java</spam>
                 </label>
 
                 <label>
-                    <input id="js" name="js" type="checkbox" checked/>
+                    <input id="js" name="js" type="checkbox" onchange="filter()" checked/>
                     <spam>JavaScript</spam>
                 </label>
 
                 <label>
-                    <input id="php" name="php" type="checkbox" checked/>
+                    <input id="php" name="php" type="checkbox" onchange="filter()" checked/>
                     <spam>PHP</spam>
                 </label>
 
                 <label>
-                    <input id="python" name="python" type="checkbox" checked/>
+                    <input id="python" name="python" type="checkbox" onchange="filter()" checked/>
                     <spam>Java</spam>
                 </label>
             </div>
@@ -308,7 +308,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="card" id="0d8b5fe0-e261-470c-a2c7-4b881530b0de">
                 <div class="profilePicture">
                     <img class="image" src="./images/0d8b5fe0-e261-470c-a2c7-4b881530b0de.jpg" alt="desenvolvedor" />
@@ -613,5 +613,7 @@
             </div>
         </div>
     </section>
+
+    <script src="js/app.js"> </script>
 </body>
 </html>
