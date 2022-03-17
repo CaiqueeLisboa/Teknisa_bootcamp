@@ -148,16 +148,16 @@ Array.from(document.querySelectorAll('.card')).forEach(card => {
 
 
 /* Função que faz funcionar o click para abrir o modal */
-function iniciaModal(modalId, cardId) {
+function iniciaModal(modalId, cardId){
     fillModal(getUserInfo(cardId));
     const modal = document.getElementById(modalId);
-    if(modal) {
+    if(modal){
         modal.classList.add("mostrar");
         modal.addEventListener("click", (e) => {
             if(e.target.id == modalId || e.target.className == "fechar"){
                 modal.classList.remove("mostrar");
             }
-        })
+        });
     }
 }
 
@@ -165,10 +165,61 @@ function iniciaModal(modalId, cardId) {
 function getUserInfo(id){
     let cardUser = document.getElementById(id);
     let userData = {};
+    userData.Languages = Array.from(cardUser.querySelectorAll(".languages > .iconLanguages")).reduce(function (acc, el){
+        let nameLanguage = el.name;
+        acc[nameLanguage] = `${el.getAttribute('experiencia')}`;
+        return acc;
+    }, {});
+    userData.picture = cardUser.querySelector(".profilePicture > img").getAttribute("src");
     if(cardUser) {
         userData = ['age', 'mail', 'phone', 'github', 'username', 'description', 'descriptionAbility'].reduce((acc,name) => {
             acc[name] = getTextContentByName(cardUser,name);
             return acc;
         }, {});
     }
+    return userData;
+}
+
+function getTextContentByName(el, name, defaultValue = ""){
+    let element = el.querySelectorAll(`*[name=${name}]`);
+    return element ? element.textContent : defaultValue;
+}
+
+function fillModal(userInfo){
+    let descriptionLanguages = getDescriptionLanguages();
+    
+    languages = Object.keys(userInfo.languages).map( langCode => {
+        return `
+            <div class="languageDescription">
+                <div class="language-name">
+                    <img name="${langCode}" class="iconLanguage" src="images/${langCode}.png" alt="language" />
+                    <span>${descriptionLanguages[langCode]}</span>
+                </div>
+                <div class="modal-experience">
+                    <span>${userInfo.languages[langCode]} Anos</span>
+                </div>
+            </div>
+        `;
+    }).join('\n');
+    modal = modalTemplate;
+    modal = modal.replaceAll('_DEV_IMAGE_', userInfo.picture);
+    modal = modal.replaceAll('_DEV_NAME_', userInfo.username);
+    modal = modal.replaceAll('_DEV_AGE_', userInfo.age);
+    modal = modal.replaceAll('_DEV_DESCRIPTION_', userInfo.description);
+    modal = modal.replaceAll('_DEV_DESCRIPTION_ABILITY_', userInfo.descriptionAbility);
+    modal = modal.replaceAll('_DEV_MAIL_', userInfo.mail);
+    modal = modal.replaceAll('_DEV_PHONE_', userInfo.phone);
+    modal = modal.replaceAll('_DEV_GIT_', userInfo.github);
+    modal = modal.replaceAll('_DEV_LANGUAGES_', languages);
+    document.querySelector('#modal-profile').innerHTML = modal;
+};
+
+function getDescriptionLanguages(){
+    let description = {
+        js: "JavaScript",
+        php: "PHP",
+        java: "Java",
+        python: "Python",
+    };
+    return description;
 }
