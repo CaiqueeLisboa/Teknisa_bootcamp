@@ -143,7 +143,7 @@ const modalTemplate = `
 
 /*Percorre os cards para adicionar a função de click para abrir o modal*/
 Array.from(document.querySelectorAll('.card')).forEach(card => {
-    card.addEventListener('click', () => iniciaModal('modal-profile', event.currentTarget.id));
+    card.addEventListener('click', (event) => iniciaModal('modal-profile', event.currentTarget.id));
 });
 
 
@@ -164,54 +164,59 @@ function iniciaModal(modalId, cardId){
 /* Função que pega as informações dos cards e adiciona em um objeto*/
 function getUserInfo(id){
     let cardUser = document.getElementById(id);
+    console.log(cardUser);
     let userData = {};
-    userData.Languages = Array.from(cardUser.querySelectorAll(".languages > .iconLanguages")).reduce(function (acc, el){
-        let nameLanguage = el.name;
-        acc[nameLanguage] = `${el.getAttribute('experiencia')}`;
-        return acc;
-    }, {});
-    userData.picture = cardUser.querySelector(".profilePicture > img").getAttribute("src");
     if(cardUser) {
-        userData = ['age', 'mail', 'phone', 'github', 'username', 'description', 'descriptionAbility'].reduce((acc,name) => {
+        userData = ['age', 'mail', 'phone', 'github', 'username', 'description', 'descriptionAbility', 'experience'].
+        reduce((acc,name) => {
             acc[name] = getTextContentByName(cardUser,name);
-            return acc;
+            return acc; 
         }, {});
+        userData.languages = Array.from(cardUser.querySelectorAll(".languages > .iconLanguage")).reduce(
+            function (acc, el){
+                let nameLanguage = el.name;
+                acc[nameLanguage] = `${el.getAttribute('experience')}`;
+                return acc;
+            }, {});
+            userData.picture = cardUser.querySelector(".profilePicture > img").getAttribute("src");   
+    return userData;    
     }
-    return userData;
-}
+};
 
 function getTextContentByName(el, name, defaultValue = ""){
-    let element = el.querySelectorAll(`*[name=${name}]`);
+    let element = el.querySelector(`*[name=${name}]`);
     return element ? element.textContent : defaultValue;
 }
 
 function fillModal(userInfo){
-    let descriptionLanguages = getDescriptionLanguages();
-    
-    languages = Object.keys(userInfo.languages).map( langCode => {
+    let descriptionLanguages = getDescriptionLanguages();   
+    languages = Object.keys(userInfo.languages).map((langCode) => {
         return `
             <div class="languageDescription">
                 <div class="language-name">
-                    <img name="${langCode}" class="iconLanguage" src="images/${langCode}.png" alt="language" />
+                    <img name="${langCode}" class="iconLanguage" src="images/${langCode}.png" alt="language"/>
                     <span>${descriptionLanguages[langCode]}</span>
                 </div>
                 <div class="modal-experience">
-                    <span>${userInfo.languages[langCode]} Anos</span>
+                    <span>${userInfo.languages[langCode]} Anos </span>
                 </div>
             </div>
         `;
-    }).join('\n');
+    })
+    .join("\n");
     modal = modalTemplate;
-    modal = modal.replaceAll('_DEV_IMAGE_', userInfo.picture);
-    modal = modal.replaceAll('_DEV_NAME_', userInfo.username);
-    modal = modal.replaceAll('_DEV_AGE_', userInfo.age);
-    modal = modal.replaceAll('_DEV_DESCRIPTION_', userInfo.description);
-    modal = modal.replaceAll('_DEV_DESCRIPTION_ABILITY_', userInfo.descriptionAbility);
-    modal = modal.replaceAll('_DEV_MAIL_', userInfo.mail);
-    modal = modal.replaceAll('_DEV_PHONE_', userInfo.phone);
-    modal = modal.replaceAll('_DEV_GIT_', userInfo.github);
-    modal = modal.replaceAll('_DEV_LANGUAGES_', languages);
+    modal = modal.replaceAll("__DEV_IMAGE__", userInfo.picture);
+    modal = modal.replaceAll("__DEV_NAME__", userInfo.username);
+    modal = modal.replaceAll("__DEV_AGE__", userInfo.age);
+    modal = modal.replaceAll("__DEV_DESCRIPTION__", userInfo.description);
+    modal = modal.replaceAll("__DEV_DESCRIPTION_ABILITY__", userInfo.descriptionAbility);
+    modal = modal.replaceAll("__DEV_MAIL__", userInfo.mail);
+    modal = modal.replaceAll("__DEV_PHONE__", userInfo.phone);
+    modal = modal.replaceAll("__DEV_GIT__", userInfo.github);
+    modal = modal.replaceAll("__DEV_LANGUAGES__", languages);
+    
     document.querySelector('#modal-profile').innerHTML = modal;
+    console.log(userInfo);
 };
 
 function getDescriptionLanguages(){
